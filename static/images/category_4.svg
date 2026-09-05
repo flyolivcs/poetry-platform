@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="500" viewBox="0 0 800 500">
+<defs>
+    <linearGradient id="paper" x1="0%" y1="0%" x2="0%" y2="100%">
+        <stop offset="0%" style="stop-color:#F7F3ED"/>
+        <stop offset="100%" style="stop-color:#EDE6DB"/>
+    </linearGradient>
+    <filter id="ink"><feGaussianBlur stdDeviation="0.5"/></filter>
+    <filter id="wash"><feGaussianBlur stdDeviation="3"/></filter>
+    <filter id="wash2"><feGaussianBlur stdDeviation="6"/></filter>
+</defs>
+<rect width="100%" height="100%" fill="url(#paper)"/>
+
+    <path d="M0,400 Q200,390 400,410 Q600,395 800,415 L800,500 L0,500 Z" fill="#9A9A9A" opacity="0.15" filter="url(#wash2)"/>
+    <rect x="150" y="280" width="12" height="130" fill="#2C2C2C" opacity="0.2"/>
+    <path d="M156,280 Q140,260 145,240 Q160,250 156,280" fill="#5A5A5A" opacity="0.3" filter="url(#wash)"/>
+    <path d="M156,290 Q135,270 140,250 Q165,265 156,290" fill="#5A5A5A" opacity="0.25" filter="url(#wash)"/>
+    <path d="M156,300 Q145,285 150,270" stroke="#5A5A5A" stroke-width="1.5" fill="none" opacity="0.3"/>
+    <rect x="600" y="270" width="12" height="140" fill="#2C2C2C" opacity="0.2"/>
+    <path d="M606,270 Q590,250 595,230 Q610,240 606,270" fill="#5A5A5A" opacity="0.3" filter="url(#wash)"/>
+    <path d="M606,280 Q585,260 590,240 Q615,255 606,280" fill="#5A5A5A" opacity="0.25" filter="url(#wash)"/>
+    <path d="M0,420 Q150,410 300,420 Q450,415 600,425 Q700,420 800,425" stroke="#9A9A9A" stroke-width="1" fill="none" opacity="0.3"/>
+    <path d="M0,440 Q150,435 300,440 Q450,438 600,442 Q700,440 800,442" stroke="#9A9A9A" stroke-width="0.8" fill="none" opacity="0.2"/>
+    <path d="M700,350 L730,340 L740,360 L735,390 L725,395 L715,380 L710,360 Z" fill="#2C2C2C" opacity="0.15" filter="url(#wash)"/>
+    <path d="M725,395 L720,420" stroke="#2C2C2C" stroke-width="1" opacity="0.2"/>
+
+</svg>

@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="500" viewBox="0 0 800 500">
+<defs>
+    <linearGradient id="paper" x1="0%" y1="0%" x2="0%" y2="100%">
+        <stop offset="0%" style="stop-color:#F7F3ED"/>
+        <stop offset="100%" style="stop-color:#EDE6DB"/>
+    </linearGradient>
+    <filter id="ink"><feGaussianBlur stdDeviation="0.5"/></filter>
+    <filter id="wash"><feGaussianBlur stdDeviation="3"/></filter>
+    <filter id="wash2"><feGaussianBlur stdDeviation="6"/></filter>
+</defs>
+<rect width="100%" height="100%" fill="url(#paper)"/>
+
+    <rect x="180" y="100" width="440" height="320" fill="#C8C8C8" opacity="0.2" filter="url(#wash)"/>
+    <rect x="180" y="100" width="440" height="320" fill="none" stroke="#2C2C2C" stroke-width="2.5" opacity="0.15"/>
+    <path d="M200,380 Q280,340 360,310 Q440,280 520,250 Q560,235 590,220" stroke="#2C2C2C" stroke-width="3" fill="none" opacity="0.3" filter="url(#ink)"/>
+    <path d="M200,400 Q280,370 380,360 Q480,350 590,340" stroke="#2C2C2C" stroke-width="2" fill="none" opacity="0.2" filter="url(#wash)"/>
+    <path d="M220,360 Q260,340 300,350" stroke="#5A5A5A" stroke-width="1.5" fill="none" opacity="0.15"/>
+    <circle cx="500" cy="180" r="30" fill="none" stroke="#2C2C2C" stroke-width="2" opacity="0.2" filter="url(#wash)"/>
+    <circle cx="500" cy="180" r="18" fill="#2C2C2C" opacity="0.08" filter="url(#wash)"/>
+    <rect x="620" y="120" width="8" height="280" fill="#2C2C2C" opacity="0.25"/>
+    <rect x="614" y="115" width="20" height="15" fill="#2C2C2C" opacity="0.3"/>
+    <path d="M624,400 L619,415 L629,415 Z" fill="#2C2C2C" opacity="0.25"/>
+    <path d="M590,220 Q600,210 610,200" stroke="#2C2C2C" stroke-width="2" fill="none" opacity="0.2"/>
+    <path d="M300,250 Q320,230 340,240" stroke="#9A9A9A" stroke-width="1" fill="none" opacity="0.1"/>
+
+</svg>

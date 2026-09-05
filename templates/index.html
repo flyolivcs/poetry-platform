@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>古诗词学习平台 - 中华经典诗词鉴赏</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo"><span class="icon">📜</span> 古诗词学习平台</div>
+        <div class="nav-links">
+            <a href="/" class="active">首页</a>
+            <a href="/category">全部诗词</a>
+            <a href="/favorites">我的收藏</a>
+            <a href="/videos">我的视频</a>
+        </div>
+        <div class="user-area" id="user-area"></div>
+    </nav>
+
+    <div class="hero">
+        <h1>中华古诗词鉴赏</h1>
+        <p>传承千年文化 · 品味诗词之美</p>
+        <div class="stats" id="hero-stats"></div>
+    </div>
+
+    <div class="container">
+        <h2 class="section-title">诗词分类</h2>
+        <div class="category-grid" id="category-grid">
+            <div class="loading">正在加载分类...</div>
+        </div>
+
+        <h2 class="section-title">名篇推荐</h2>
+        <div class="poem-list" id="featured-poems">
+            <div class="loading">正在加载推荐诗词...</div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>古诗词学习平台 | 基于真实历史诗词数据 | 包含1000首经典名诗 + 1000首经典名词</p>
+        <p>数据来源：中华诗词数据库（chinese-poetry）</p>
+    </div>
+
+    <script src="/static/js/app.js"></script>
+    <script>
+        async function init() {
+            await renderNavbar();
+            loadStats();
+
+            const catData = await API.getCategories();
+            const grid = document.getElementById('category-grid');
+            grid.innerHTML = '';
+            const descs = {
+                1: '描绘自然山水风光与田园生活，寄情山水之间',
+                2: '描写边塞风光、军旅征战，气势豪迈壮阔',
+                3: '咏叹历史兴衰、缅怀古人古迹，抒发怀古之情',
+                4: '抒写离别之情、送别友人之作，情深意长',
+                5: '描写爱情相思、闺怨离愁，细腻婉约动人',
+                6: '描写四时节令、风俗民情，展现岁时文化',
+                7: '借咏物寄情言志，托物言志，寓意深远',
+                8: '叙事抒怀、感时伤世，记录人生感悟',
+                9: '蕴含禅理道意，空灵超脱，启迪心智',
+                10: '题画写意、丹青墨韵，诗画相映成趣'
+            };
+            for (const cat of catData.categories) {
+                const card = document.createElement('div');
+                card.className = 'category-card';
+                card.onclick = () => location.href = `/category?cat=${cat.id}`;
+                card.innerHTML = `
+                    <div class="card-image"><img src="${cat.image}" alt="${cat.name}"></div>
+                    <div class="card-body">
+                        <div class="card-title">${cat.id}. ${cat.name}</div>
+                        <div class="card-count">共 ${cat.count} 首</div>
+                        <div class="card-desc">${descs[cat.id] || ''}</div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            }
+
+            const poemData = await API.getPoems({ page: 1, pageSize: 5 });
+            const featured = document.getElementById('featured-poems');
+            featured.innerHTML = '';
+            for (const poem of poemData.poems) {
+                featured.appendChild(createPoemCard(poem));
+            }
+        }
+        init();
+    </script>
+</body>
+</html>

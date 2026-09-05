@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的视频 - 古诗词学习平台</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo"><span class="icon">📜</span> 古诗词学习平台</div>
+        <div class="nav-links">
+            <a href="/">首页</a>
+            <a href="/category">全部诗词</a>
+            <a href="/favorites">我的收藏</a>
+            <a href="/videos" class="active">我的视频</a>
+        </div>
+        <div class="user-area" id="user-area"></div>
+    </nav>
+
+    <div class="container">
+        <h2 class="section-title">我的收藏视频</h2>
+        <div id="video-container">
+            <div class="loading">正在加载...</div>
+        </div>
+    </div>
+
+    <div class="footer"><p>古诗词学习平台 | 真实历史诗词数据</p></div>
+
+    <script src="/static/js/app.js"></script>
+    <script>
+        async function init() {
+            await renderNavbar();
+            if (!API.token) {
+                document.getElementById('video-container').innerHTML = `
+                    <div class="empty-state">
+                        <div class="icon">🔒</div>
+                        <h3>请先登录</h3>
+                        <p>登录后可管理您的收藏视频</p>
+                        <button class="btn-primary" style="margin-top:20px;padding:10px 30px;border:none;border-radius:8px;cursor:pointer;font-size:16px;" onclick="location.href='/login'">去登录</button>
+                    </div>`;
+                return;
+            }
+            const data = await API.getVideos();
+            if (data.error) { showToast(data.error); return; }
+            const container = document.getElementById('video-container');
+
+            let html = `
+                <div class="add-video-form">
+                    <h3>➕ 添加收藏视频</h3>
+                    <div class="form-row">
+                        <input type="text" id="video-title" placeholder="视频标题（如：李白将进酒朗诵）">
+                    </div>
+                    <div class="form-row">
+                        <input type="text" id="video-url" placeholder="视频URL（支持mp4格式直链）">
+                    </div>
+                    <div class="form-row">
+                        <input type="text" id="video-poem" placeholder="关联诗词ID（可选，如：tang_0001）">
+                        <button class="btn-add" onclick="addVideo()">添加视频</button>
+                    </div>
+                    <p style="font-size:12px;color:var(--text-light);margin-top:8px;">
+                        提示：可使用公开的mp4视频直链，如 <code>https://example.com/video.mp4</code>
+                    </p>
+                </div>
+                <div id="video-list"></div>
+            `;
+            container.innerHTML = html;
+
+            const listEl = document.getElementById('video-list');
+            if (data.videos.length === 0) {
+                listEl.innerHTML = `
+                    <div class="empty-state">
+                        <div class="icon">🎬</div>
+                        <h3>暂无收藏视频</h3>
+                        <p>在上方添加您喜欢的诗词相关视频</p>
+                    </div>`;
+                return;
+            }
+
+            listEl.innerHTML = `<p style="text-align:center;color:var(--text-light);margin-bottom:20px;">共 ${data.videos.length} 个视频</p>`;
+            for (const vid of data.videos) {
+                const card = document.createElement('div');
+                card.className = 'video-card';
+                const date = new Date(vid.createdAt).toLocaleString('zh-CN');
+                card.innerHTML = `
+                    <div class="video-header">
+                        <div class="video-title">${vid.title}</div>
+                        <button class="btn-delete" onclick="deleteVideo('${vid.id}')">删除</button>
+                    </div>
+                    <div class="video-body">
+                        ${vid.url && vid.url.endsWith('.mp4')
+                            ? `<video controls src="${vid.url}"></video>`
+                            : `<div class="no-video">📹 视频链接：<a href="${vid.url}" target="_blank">${vid.url}</a><br><span style="font-size:12px;">（非mp4直链，点击打开）</span></div>`}
+                        <p style="margin-top:8px;font-size:12px;color:var(--text-light);">收藏时间：${date}${vid.poemId ? ' | 关联诗词：' + vid.poemId : ''}</p>
+                    </div>
+                `;
+                listEl.appendChild(card);
+            }
+        }
+
+        async function addVideo() {
+            const title = document.getElementById('video-title').value.trim();
+            const url = document.getElementById('video-url').value.trim();
+            const poemId = document.getElementById('video-poem').value.trim();
+            if (!title || !url) { showToast('请填写标题和URL'); return; }
+            const data = await API.addVideo(title, url, poemId);
+            if (data.success) { showToast('视频添加成功！'); init(); }
+        }
+
+        async function deleteVideo(id) {
+            const data = await API.deleteVideo(id);
+            if (data.success) { showToast('已删除'); init(); }
+        }
+
+        init();
+    </script>
+</body>
+</html>
