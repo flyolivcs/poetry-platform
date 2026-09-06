@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 <svg xmlns="http://www.w3.org/2000/svg" width="400" height="180" viewBox="0 0 400 180">
   <defs>
     <linearGradient id="g3" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -13,29 +12,4 @@
   <text x="200" y="80" text-anchor="middle" font-size="48" fill="rgba(255,255,255,0.3)" font-family="serif">📜</text>
   <text x="200" y="115" text-anchor="middle" font-size="28" fill="white" font-family="serif" font-weight="bold" letter-spacing="6">咏史怀古</text>
   <text x="200" y="145" text-anchor="middle" font-size="14" fill="rgba(255,255,255,0.7)" font-family="serif">中华古诗词学习平台</text>
-=======
-<svg xmlns="http://www.w3.org/2000/svg" width="800" height="500" viewBox="0 0 800 500">
-<defs>
-    <linearGradient id="paper" x1="0%" y1="0%" x2="0%" y2="100%">
-        <stop offset="0%" style="stop-color:#F7F3ED"/>
-        <stop offset="100%" style="stop-color:#EDE6DB"/>
-    </linearGradient>
-    <filter id="ink"><feGaussianBlur stdDeviation="0.5"/></filter>
-    <filter id="wash"><feGaussianBlur stdDeviation="3"/></filter>
-    <filter id="wash2"><feGaussianBlur stdDeviation="6"/></filter>
-</defs>
-<rect width="100%" height="100%" fill="url(#paper)"/>
-
-    <path d="M0,380 Q200,370 400,390 Q600,375 800,395 L800,500 L0,500 Z" fill="#9A9A9A" opacity="0.15" filter="url(#wash2)"/>
-    <rect x="250" y="180" width="300" height="220" fill="#2C2C2C" opacity="0.12" filter="url(#wash)"/>
-    <rect x="250" y="180" width="300" height="8" fill="#2C2C2C" opacity="0.25"/>
-    <rect x="270" y="200" width="260" height="190" fill="none" stroke="#5A5A5A" stroke-width="1.5" opacity="0.3"/>
-    <rect x="350" y="150" width="100" height="40" fill="#2C2C2C" opacity="0.2"/>
-    <path d="M350,150 Q360,140 370,150 Q380,140 390,150 Q400,140 410,150 Q420,140 430,150 Q440,140 450,150" stroke="#2C2C2C" stroke-width="2" fill="none" opacity="0.3"/>
-    <rect x="370" y="165" width="60" height="20" fill="#2C2C2C" opacity="0.15"/>
-    <rect x="300" y="400" width="200" height="15" fill="#2C2C2C" opacity="0.2"/>
-    <circle cx="400" cy="100" r="40" fill="none" stroke="#9A9A9A" stroke-width="2" opacity="0.3" filter="url(#wash)"/>
-    <circle cx="400" cy="100" r="25" fill="none" stroke="#9A9A9A" stroke-width="1.5" opacity="0.2"/>
-
->>>>>>> origin/main
 </svg>

@@ -1,33 +1,3 @@
-<<<<<<< HEAD
 node_modules/
 *.log
 .DS_Store
-=======
-# 临时和缓存文件
-data/tang_all.json
-data/ci_all.json
-data/tang_rank_all.json
-data/ci_rank_all.json
-data/tang_rank_0.json
-data/tang_rank_1.json
-data/ci_rank_0.json
-data/ci_rank_1.json
-data/tree.json
-data/file_list.json
-data/test_tang.json
-data/tang0.json
-data/tang0_f.json
-data/tang_unpkg.json
-data/db.json
-
-# 旧版本脚本
-data/process_data.js
-data/process_data_v2.js
-data/process_data_v3.js
-
-# 系统文件
-node_modules/
-.DS_Store
-*.log
-/tmp/
->>>>>>> origin/main

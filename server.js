@@ -32,7 +32,6 @@ function getCategoryImage(id) {
     return `/static/images/category_${id}.jpg`;
 }
 
-<<<<<<< HEAD
 const GRADE_ORDER = {
     '小学1年级': 1, '小学2年级': 2, '小学3年级': 3, '小学4年级': 4, '小学5年级': 5, '小学6年级': 6,
     '初中1年级': 7, '初中2年级': 8, '初中3年级': 9,
@@ -55,97 +54,6 @@ function sortPoems(arr) {
     });
 }
 
-=======
->>>>>>> origin/main
-for (const cat of categories) {
-    cat.image = getCategoryImage(cat.id);
-}
-
-const MIME_TYPES = {
-    '.html': 'text/html; charset=utf-8',
-    '.css': 'text/css; charset=utf-8',
-    '.js': 'application/javascript; charset=utf-8',
-    '.json': 'application/json; charset=utf-8',
-    '.png': 'image/png',
-    '.jpg': 'image/jpeg',
-    '.jpeg': 'image/jpeg',
-    '.gif': 'image/gif',
-    '.svg': 'image/svg+xml',
-    '.ico': 'image/x-icon',
-    '.mp4': 'video/mp4'
-};
-
-function serveStatic(filePath, res) {
-    fs.readFile(filePath, (err, data) => {
-        if (err) {
-            res.writeHead(404);
-            res.end('Not Found');
-            return;
-        }
-        const ext = path.extname(filePath);
-        res.writeHead(200, {'Content-Type': MIME_TYPES[ext] || 'application/octet-stream'});
-        res.end(data);
-    });
-}
-
-function parseBody(req) {
-    return new Promise((resolve) => {
-        let body = '';
-        req.on('data', chunk => body += chunk);
-        req.on('end', () => {
-            try { resolve(JSON.parse(body)); }
-            catch(e) { resolve({}); }
-        });
-    });
-}
-
-function getUserFromToken(req) {
-    const auth = req.headers.authorization;
-    if (!auth) return null;
-    const token = auth.replace('Bearer ', '');
-    const session = db.sessions[token];
-    if (!session) return null;
-    return { username: session.username, token };
-}
-
-function sendJSON(res, data, status = 200) {
-    res.writeHead(status, {'Content-Type': 'application/json; charset=utf-8'});
-    res.end(JSON.stringify(data));
-}
-
-const server = http.createServer(async (req, res) => {
-    const url = new URL(req.url, `http://${req.headers.host}`);
-    const pathname = url.pathname;
-    const method = req.method;
-
-    if (pathname.startsWith('/api/')) {
-        const user = getUserFromToken(req);
-
-        if (pathname === '/api/categories' && method === 'GET') {
-            return sendJSON(res, { categories });
-        }
-
-        if (pathname === '/api/poems' && method === 'GET') {
-            const category = url.searchParams.get('category');
-            const page = parseInt(url.searchParams.get('page') || '1');
-            const pageSize = parseInt(url.searchParams.get('pageSize') || '20');
-            const type = url.searchParams.get('type');
-            const keyword = url.searchParams.get('keyword');
-
-            let filtered = poems;
-            if (category) filtered = filtered.filter(p => p.category === parseInt(category));
-            if (type) filtered = filtered.filter(p => p.type === type);
-            if (keyword) {
-                filtered = filtered.filter(p =>
-                    p.title.includes(keyword) || p.author.includes(keyword) || p.content.includes(keyword)
-                );
-            }
-
-<<<<<<< HEAD
-            filtered = sortPoems([...filtered]);
-
-=======
->>>>>>> origin/main
             const total = filtered.length;
             const totalPages = Math.ceil(total / pageSize);
             const start = (page - 1) * pageSize;
@@ -317,22 +225,6 @@ const server = http.createServer(async (req, res) => {
     return serveStatic(path.join(TEMPLATE_DIR, '404.html'), res);
 });
 
-<<<<<<< HEAD
-=======
-function detectFreePort() {
-    const net = require('net');
-    return new Promise((resolve) => {
-        const server = net.createServer();
-        server.unref();
-        server.on('error', () => resolve(null));
-        server.listen(0, () => {
-            const port = server.address().port;
-            server.close(() => resolve(port));
-        });
-    });
-}
-
->>>>>>> origin/main
 (async () => {
     let port = parseInt(process.env.PORT) || 3000;
     const net = require('net');

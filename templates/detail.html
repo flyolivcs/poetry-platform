@@ -5,6 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>诗词详情 - 古诗词学习平台</title>
     <link rel="stylesheet" href="/static/css/style.css">
+    <style>
+        .pinyin-line { display:flex; flex-wrap:wrap; justify-content:center; margin:8px 0; }
+        .pinyin-char { display:inline-flex; flex-direction:column; align-items:center; margin:0 1px; }
+        .pinyin-char .py { font-size:13px; color:#888; line-height:1.2; font-family:'Segoe UI',sans-serif; }
+        .pinyin-char .ch { font-size:22px; line-height:1.4; }
+        .pinyin-punct { font-size:22px; line-height:1.4; margin:0 1px; align-self:flex-end; }
+        .kw-sup { font-size:11px; color:#e74c3c; font-weight:bold; vertical-align:super; margin-left:1px; }
+        .kw-item { margin:8px 0; font-size:15px; }
+        .kw-num { display:inline-block; width:20px; height:20px; line-height:20px; text-align:center; background:#e74c3c; color:#fff; border-radius:50%; font-size:12px; font-weight:bold; margin-right:8px; }
+    </style>
 </head>
 <body>
     <nav class="navbar">
@@ -30,6 +40,71 @@
 
     <script src="/static/js/app.js"></script>
     <script>
+        function buildPinyinHtml(contentLine, pinyinLine) {
+            const tokens = pinyinLine.trim().match(/[a-zāáǎàēéěèīíǐìōóǒòūúǔùǖǘǚǜñ]+|[，。；：！？、]/gi) || [];
+            const chars = [...contentLine];
+            let tokIdx = 0;
+            let html = '<div class="pinyin-line">';
+            for (const ch of chars) {
+                if (/[\u4e00-\u9fff]/.test(ch)) {
+                    while (tokIdx < tokens.length && /[，。；：！？、]/.test(tokens[tokIdx])) {
+                        html += `<span class="pinyin-punct">${tokens[tokIdx]}</span>`;
+                        tokIdx++;
+                    }
+                    if (tokIdx < tokens.length) {
+                        html += `<span class="pinyin-char"><span class="py">${tokens[tokIdx]}</span><span class="ch">${ch}</span></span>`;
+                        tokIdx++;
+                    } else {
+                        html += `<span class="pinyin-char"><span class="py">&nbsp;</span><span class="ch">${ch}</span></span>`;
+                    }
+                } else {
+                    while (tokIdx < tokens.length && /[，。；：！？、]/.test(tokens[tokIdx])) {
+                        tokIdx++;
+                    }
+                    html += `<span class="pinyin-punct">${ch}</span>`;
+                }
+            }
+            html += '</div>';
+            return html;
+        }
+
+        function buildAnnotatedContent(content, keywords) {
+            if (!keywords || keywords.length === 0) return formatContent(content);
+            let html = '';
+            const lines = content.split('\n');
+            for (let i = 0; i < lines.length; i++) {
+                let line = lines[i];
+                let lineHtml = '';
+                let j = 0;
+                const chars = [...line];
+                while (j < chars.length) {
+                    let matched = false;
+                    for (let k = 0; k < keywords.length; k++) {
+                        const kw = keywords[k][0];
+                        const kwChars = [...kw];
+                        if (j + kwChars.length <= chars.length) {
+                            let match = true;
+                            for (let m = 0; m < kwChars.length; m++) {
+                                if (chars[j + m] !== kwChars[m]) { match = false; break; }
+                            }
+                            if (match) {
+                                lineHtml += `<span style="color:var(--primary);font-weight:bold;">${kw}</span><sup class="kw-sup">${k+1}</sup>`;
+                                j += kwChars.length;
+                                matched = true;
+                                break;
+                            }
+                        }
+                    }
+                    if (!matched) {
+                        lineHtml += chars[j];
+                        j++;
+                    }
+                }
+                html += `<p style="margin:8px 0;font-size:20px;line-height:2;">${lineHtml}</p>`;
+            }
+            return html;
+        }
+
         async function init() {
             await renderNavbar();
             const id = getQueryParam('id');
@@ -51,6 +126,22 @@
                 favorited = favData.favorited;
             }
 
+            const hasAnalysis = poem.pinyin || poem.translation || poem.analysis;
+
+            const pinyinHtml = poem.pinyin ? (() => {
+                const contentLines = poem.content.split('\n');
+                const pinyinLines = poem.pinyin.split('\n');
+                let html = '';
+                for (let i = 0; i < contentLines.length; i++) {
+                    if (pinyinLines[i]) {
+                        html += buildPinyinHtml(contentLines[i], pinyinLines[i]);
+                    }
+                }
+                return html;
+            })() : '';
+
+            const annotatedContent = buildAnnotatedContent(poem.content, poem.keywords);
+
             const container = document.getElementById('detail-container');
             container.innerHTML = `
                 <div class="detail-page">
@@ -58,14 +149,10 @@
                     <div class="detail-meta">
                         <span style="margin-right:16px;">【${poem.dynary || poem.dynasty}代】${poem.author}</span>
                         <span style="margin-right:16px;">类型：${poem.type}</span>
-<<<<<<< HEAD
                         <span style="margin-right:16px;">分类：${getCategoryName(poem.category)}</span>
                         ${poem.grade ? `<span style="display:inline-block;padding:2px 10px;background:linear-gradient(135deg,#e74c3c,#c0392b);color:#fff;border-radius:12px;font-size:12px;font-weight:bold;">${poem.grade}</span>` : ''}
-=======
-                        <span>分类：${getCategoryName(poem.category)}</span>
->>>>>>> origin/main
                     </div>
-                    <div class="detail-content">${formatContent(poem.content)}</div>
+                    <div class="detail-content" style="text-align:center;">${annotatedContent}</div>
                     <div class="detail-actions">
                         <button class="btn-like" id="btn-like" onclick="doLike('${poem.id}')">
                             ❤ <span id="like-count">${poem.likes + (data.likeCount || 0)}</span> 点赞
@@ -78,11 +165,10 @@
                         </button>
                     </div>
                     <div style="margin-top:40px;padding-top:30px;border-top:1px solid var(--accent);">
-<<<<<<< HEAD
                         ${poem.pinyin ? `
                         <div class="analysis-section">
                             <h3 style="color:var(--primary);margin-bottom:12px;">🔤 拼音注音</h3>
-                            <div style="background:var(--bg);border-radius:8px;padding:16px;line-height:2.2;font-size:16px;color:var(--text);">${poem.pinyin.split('\n').map(l=>`<p style="margin:4px 0;">${l}</p>`).join('')}</div>
+                            <div style="background:var(--bg);border-radius:8px;padding:20px 16px;">${pinyinHtml}</div>
                         </div>` : ''}
                         ${poem.translation ? `
                         <div class="analysis-section" style="margin-top:24px;">
@@ -93,7 +179,7 @@
                         <div class="analysis-section" style="margin-top:24px;">
                             <h3 style="color:var(--primary);margin-bottom:12px;">📝 关键词解释</h3>
                             <div style="background:var(--bg);border-radius:8px;padding:16px;">
-                                ${poem.keywords.map(k=>`<p style="margin:6px 0;font-size:15px;"><strong style="color:var(--primary);">${k[0]}</strong>：<span style="color:var(--text);">${k[1]}</span></p>`).join('')}
+                                ${poem.keywords.map((k,i)=>`<div class="kw-item"><span class="kw-num">${i+1}</span><strong style="color:var(--primary);">${k[0]}</strong>：<span style="color:var(--text);">${k[1]}</span></div>`).join('')}
                             </div>
                         </div>` : ''}
                         ${poem.analysis ? `
@@ -106,9 +192,7 @@
                             <h3 style="color:var(--primary);margin-bottom:12px;">👤 作者介绍</h3>
                             <div style="background:var(--bg);border-radius:8px;padding:16px;line-height:2;font-size:15px;color:var(--text-light);">${poem.authorIntro}</div>
                         </div>` : ''}
-                        ${!poem.pinyin && !poem.translation && !poem.analysis ? `
-=======
->>>>>>> origin/main
+                        ${!hasAnalysis ? `
                         <h3 style="color:var(--primary);margin-bottom:16px;">📖 诗词赏析</h3>
                         <p style="color:var(--text-light);line-height:2;">
                             本作品为${poem.dynasty}代${poem.type}人${poem.author}所作，收录于"${getCategoryName(poem.category)}"分类。
@@ -118,11 +202,7 @@
                         <div style="margin-top:20px;padding:16px;background:var(--bg);border-radius:8px;">
                             <strong style="color:var(--primary);">原文分段：</strong>
                             ${poem.paragraphs.map(p => `<p style="margin:8px 0;font-size:18px;">${p}</p>`).join('')}
-<<<<<<< HEAD
                         </div>` : ''}
-=======
-                        </div>
->>>>>>> origin/main
                     </div>
                 </div>
             `;
