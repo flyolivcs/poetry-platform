@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>登录 - 古诗词学习平台</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo"><span class="icon">📜</span> 古诗词学习平台</div>
+        <div class="nav-links">
+            <a href="/">首页</a>
+            <a href="/category">全部诗词</a>
+        </div>
+        <div class="user-area" id="user-area"></div>
+    </nav>
+
+    <div class="auth-form">
+        <h2>用户登录</h2>
+        <div class="form-group">
+            <label>用户名</label>
+            <input type="text" id="username" placeholder="请输入用户名">
+        </div>
+        <div class="form-group">
+            <label>密码</label>
+            <input type="password" id="password" placeholder="请输入密码">
+        </div>
+        <button class="btn-submit" onclick="doLogin()">登 录</button>
+        <div class="form-footer">
+            还没有账号？<a href="/register">立即注册</a>
+        </div>
+    </div>
+
+    <script src="/static/js/app.js"></script>
+    <script>
+        renderNavbar();
+
+        async function doLogin() {
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value.trim();
+            if (!username || !password) {
+                showToast('请填写用户名和密码');
+                return;
+            }
+            const data = await API.login(username, password);
+            if (data.error) {
+                showToast(data.error);
+                return;
+            }
+            API.setToken(data.token);
+            showToast('登录成功！');
+            setTimeout(() => location.href = '/', 1000);
+        }
+
+        document.getElementById('password').addEventListener('keydown', e => {
+            if (e.key === 'Enter') doLogin();
+        });
+    </script>
+</body>
+</html>

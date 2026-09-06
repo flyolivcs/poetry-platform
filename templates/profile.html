@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>个人中心 - 古诗词学习平台</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo"><span class="icon">📜</span> 古诗词学习平台</div>
+        <div class="nav-links">
+            <a href="/">首页</a>
+            <a href="/category">全部诗词</a>
+            <a href="/favorites">我的收藏</a>
+            <a href="/videos">我的视频</a>
+        </div>
+        <div class="user-area" id="user-area"></div>
+    </nav>
+
+    <div class="container">
+        <h2 class="section-title">个人中心</h2>
+        <div id="profile-container">
+            <div class="loading">正在加载...</div>
+        </div>
+    </div>
+
+    <div class="footer"><p>古诗词学习平台 | 真实历史诗词数据</p></div>
+
+    <script src="/static/js/app.js"></script>
+    <script>
+        async function init() {
+            await renderNavbar();
+            const container = document.getElementById('profile-container');
+            if (!API.token) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="icon">🔒</div>
+                        <h3>请先登录</h3>
+                        <p>登录后可查看个人中心</p>
+                        <button class="btn-primary" style="margin-top:20px;padding:10px 30px;border:none;border-radius:8px;cursor:pointer;font-size:16px;" onclick="location.href='/login'">去登录</button>
+                    </div>`;
+                return;
+            }
+            const user = await API.getUser();
+            const stats = await API.getStats();
+            const favData = await API.getFavorites();
+            const vidData = await API.getVideos();
+            container.innerHTML = `
+                <div class="detail-page" style="max-width:600px;">
+                    <div class="detail-title">👤 ${user.user.username}</div>
+                    <div class="detail-meta">欢迎来到个人中心</div>
+                    <div style="display:flex;justify-content:space-around;margin-top:30px;">
+                        <div class="stat-item" style="text-align:center;">
+                            <div class="num" style="font-size:36px;color:var(--primary);font-weight:bold;">${favData.favorites ? favData.favorites.length : 0}</div>
+                            <div style="font-size:14px;color:var(--text-light);">我的收藏</div>
+                        </div>
+                        <div class="stat-item" style="text-align:center;">
+                            <div class="num" style="font-size:36px;color:var(--primary);font-weight:bold;">${vidData.videos ? vidData.videos.length : 0}</div>
+                            <div style="font-size:14px;color:var(--text-light);">我的视频</div>
+                        </div>
+                        <div class="stat-item" style="text-align:center;">
+                            <div class="num" style="font-size:36px;color:var(--primary);font-weight:bold;">${stats.totalPoems}</div>
+                            <div style="font-size:14px;color:var(--text-light);">平台诗词</div>
+                        </div>
+                    </div>
+                    <div class="detail-actions" style="margin-top:40px;">
+                        <button class="btn-fav" onclick="location.href='/favorites'">我的收藏</button>
+                        <button class="btn-fav" onclick="location.href='/videos'">我的视频</button>
+                        <button class="btn-like" onclick="doLogout()">登出</button>
+                    </div>
+                </div>
+            `;
+        }
+        init();
+    </script>
+</body>
+</html>

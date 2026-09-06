@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>诗词详情 - 古诗词学习平台</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo"><span class="icon">📜</span> 古诗词学习平台</div>
+        <div class="nav-links">
+            <a href="/">首页</a>
+            <a href="/category">全部诗词</a>
+            <a href="/favorites">我的收藏</a>
+            <a href="/videos">我的视频</a>
+        </div>
+        <div class="user-area" id="user-area"></div>
+    </nav>
+
+    <div class="container">
+        <div id="detail-container">
+            <div class="loading">正在加载诗词详情...</div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>古诗词学习平台 | 真实历史诗词数据</p>
+    </div>
+
+    <script src="/static/js/app.js"></script>
+    <script>
+        async function init() {
+            await renderNavbar();
+            const id = getQueryParam('id');
+            if (!id) {
+                document.getElementById('detail-container').innerHTML = '<div class="empty-state"><h3>未指定诗词ID</h3></div>';
+                return;
+            }
+
+            const data = await API.getPoem(id);
+            if (data.error) {
+                document.getElementById('detail-container').innerHTML = `<div class="empty-state"><h3>${data.error}</h3></div>`;
+                return;
+            }
+
+            const poem = data.poem;
+            let favorited = false;
+            if (API.token) {
+                const favData = await API.checkFavorite(id);
+                favorited = favData.favorited;
+            }
+
+            const container = document.getElementById('detail-container');
+            container.innerHTML = `
+                <div class="detail-page">
+                    <div class="detail-title">${poem.title}${poem.rhythmic ? ' · ' + poem.rhythmic : ''}</div>
+                    <div class="detail-meta">
+                        <span style="margin-right:16px;">【${poem.dynary || poem.dynasty}代】${poem.author}</span>
+                        <span style="margin-right:16px;">类型：${poem.type}</span>
+                        <span style="margin-right:16px;">分类：${getCategoryName(poem.category)}</span>
+                        ${poem.grade ? `<span style="display:inline-block;padding:2px 10px;background:linear-gradient(135deg,#e74c3c,#c0392b);color:#fff;border-radius:12px;font-size:12px;font-weight:bold;">${poem.grade}</span>` : ''}
+                    </div>
+                    <div class="detail-content">${formatContent(poem.content)}</div>
+                    <div class="detail-actions">
+                        <button class="btn-like" id="btn-like" onclick="doLike('${poem.id}')">
+                            ❤ <span id="like-count">${poem.likes + (data.likeCount || 0)}</span> 点赞
+                        </button>
+                        <button class="btn-fav ${favorited ? 'active' : ''}" id="btn-fav" onclick="doFav('${poem.id}')">
+                            ${favorited ? '★ 已收藏' : '☆ 收藏'}
+                        </button>
+                        <button class="btn-fav" onclick="goBack()" style="background:var(--bg);color:var(--primary);border:1px solid var(--primary);">
+                            ← 返回列表
+                        </button>
+                    </div>
+                    <div style="margin-top:40px;padding-top:30px;border-top:1px solid var(--accent);">
+                        ${poem.pinyin ? `
+                        <div class="analysis-section">
+                            <h3 style="color:var(--primary);margin-bottom:12px;">🔤 拼音注音</h3>
+                            <div style="background:var(--bg);border-radius:8px;padding:16px;line-height:2.2;font-size:16px;color:var(--text);">${poem.pinyin.split('\n').map(l=>`<p style="margin:4px 0;">${l}</p>`).join('')}</div>
+                        </div>` : ''}
+                        ${poem.translation ? `
+                        <div class="analysis-section" style="margin-top:24px;">
+                            <h3 style="color:var(--primary);margin-bottom:12px;">📖 全文译文</h3>
+                            <div style="background:var(--bg);border-radius:8px;padding:16px;line-height:2;font-size:16px;color:var(--text);">${poem.translation}</div>
+                        </div>` : ''}
+                        ${poem.keywords && poem.keywords.length > 0 ? `
+                        <div class="analysis-section" style="margin-top:24px;">
+                            <h3 style="color:var(--primary);margin-bottom:12px;">📝 关键词解释</h3>
+                            <div style="background:var(--bg);border-radius:8px;padding:16px;">
+                                ${poem.keywords.map(k=>`<p style="margin:6px 0;font-size:15px;"><strong style="color:var(--primary);">${k[0]}</strong>：<span style="color:var(--text);">${k[1]}</span></p>`).join('')}
+                            </div>
+                        </div>` : ''}
+                        ${poem.analysis ? `
+                        <div class="analysis-section" style="margin-top:24px;">
+                            <h3 style="color:var(--primary);margin-bottom:12px;">🔍 诗词赏析</h3>
+                            <div style="background:var(--bg);border-radius:8px;padding:16px;line-height:2;font-size:16px;color:var(--text);">${poem.analysis}</div>
+                        </div>` : ''}
+                        ${poem.authorIntro ? `
+                        <div class="analysis-section" style="margin-top:24px;">
+                            <h3 style="color:var(--primary);margin-bottom:12px;">👤 作者介绍</h3>
+                            <div style="background:var(--bg);border-radius:8px;padding:16px;line-height:2;font-size:15px;color:var(--text-light);">${poem.authorIntro}</div>
+                        </div>` : ''}
+                        ${!poem.pinyin && !poem.translation && !poem.analysis ? `
+                        <h3 style="color:var(--primary);margin-bottom:16px;">📖 诗词赏析</h3>
+                        <p style="color:var(--text-light);line-height:2;">
+                            本作品为${poem.dynasty}代${poem.type}人${poem.author}所作，收录于"${getCategoryName(poem.category)}"分类。
+                            ${poem.type === '词' ? '词牌名为"' + (poem.rhythmic || '未知') + '"。' : ''}
+                            全诗共${poem.paragraphs.length}句，展现了作者深厚的文学功底和独特的艺术风格。
+                        </p>
+                        <div style="margin-top:20px;padding:16px;background:var(--bg);border-radius:8px;">
+                            <strong style="color:var(--primary);">原文分段：</strong>
+                            ${poem.paragraphs.map(p => `<p style="margin:8px 0;font-size:18px;">${p}</p>`).join('')}
+                        </div>` : ''}
+                    </div>
+                </div>
+            `;
+        }
+
+        function getCategoryName(id) {
+            const names = {1:'山水田园',2:'边塞军旅',3:'咏史怀古',4:'离别送行',5:'爱情闺怨',6:'节令风俗',7:'咏物言志',8:'叙事抒怀',9:'禅理悟道',10:'题画写意'};
+            return names[id] || '未知';
+        }
+
+        async function doLike(poemId) {
+            const data = await API.like(poemId);
+            if (data.likeCount) {
+                const el = document.getElementById('like-count');
+                el.textContent = parseInt(el.textContent) + 1;
+                document.getElementById('btn-like').classList.add('active');
+                showToast('点赞成功！');
+            }
+        }
+
+        async function doFav(poemId) {
+            if (!API.token) {
+                showToast('请先登录');
+                setTimeout(() => location.href = '/login', 1500);
+                return;
+            }
+            const data = await API.toggleFavorite(poemId);
+            const btn = document.getElementById('btn-fav');
+            if (data.favorited) {
+                btn.classList.add('active');
+                btn.innerHTML = '★ 已收藏';
+                showToast('收藏成功！');
+            } else {
+                btn.classList.remove('active');
+                btn.innerHTML = '☆ 收藏';
+                showToast('已取消收藏');
+            }
+        }
+
+        function goBack() {
+            const cat = getQueryParam('cat');
+            location.href = cat ? `/category?cat=${cat}` : '/category';
+        }
+
+        init();
+    </script>
+</body>
+</html>

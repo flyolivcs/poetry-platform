@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>诗词列表 - 古诗词学习平台</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo"><span class="icon">📜</span> 古诗词学习平台</div>
+        <div class="nav-links">
+            <a href="/">首页</a>
+            <a href="/category" class="active">全部诗词</a>
+            <a href="/favorites">我的收藏</a>
+            <a href="/videos">我的视频</a>
+        </div>
+        <div class="user-area" id="user-area"></div>
+    </nav>
+
+    <div class="container">
+        <h2 class="section-title" id="page-title">全部诗词</h2>
+
+        <div class="filter-bar">
+            <select id="filter-category" onchange="reloadPoems()">
+                <option value="">全部分类</option>
+            </select>
+            <select id="filter-type" onchange="reloadPoems()">
+                <option value="">诗和词</option>
+                <option value="诗">仅诗</option>
+                <option value="词">仅词</option>
+            </select>
+            <input type="text" class="search-input" id="search-keyword" placeholder="搜索标题、作者或内容..." onkeydown="if(event.key==='Enter') reloadPoems()">
+            <button class="btn-search" onclick="reloadPoems()">搜索</button>
+        </div>
+
+        <div class="poem-list" id="poem-list">
+            <div class="loading">正在加载...</div>
+        </div>
+
+        <div class="pagination" id="pagination"></div>
+    </div>
+
+    <div class="footer">
+        <p>古诗词学习平台 | 真实历史诗词数据</p>
+    </div>
+
+    <script src="/static/js/app.js"></script>
+    <script>
+        let currentPage = 1;
+        const pageSize = 20;
+
+        async function init() {
+            await renderNavbar();
+
+            const catData = await API.getCategories();
+            const select = document.getElementById('filter-category');
+            for (const cat of catData.categories) {
+                const opt = document.createElement('option');
+                opt.value = cat.id;
+                opt.textContent = `${cat.id}. ${cat.name} (${cat.count}首)`;
+                select.appendChild(opt);
+            }
+
+            const catParam = getQueryParam('cat');
+            if (catParam) {
+                select.value = catParam;
+                const cat = catData.categories.find(c => c.id == catParam);
+                if (cat) document.getElementById('page-title').textContent = `${cat.name} - 诗词列表`;
+            }
+
+            await loadPoems();
+        }
+
+        async function loadPoems() {
+            const category = document.getElementById('filter-category').value;
+            const type = document.getElementById('filter-type').value;
+            const keyword = document.getElementById('search-keyword').value;
+
+            const params = { page: currentPage, pageSize };
+            if (category) params.category = category;
+            if (type) params.type = type;
+            if (keyword) params.keyword = keyword;
+
+            const data = await API.getPoems(params);
+            const list = document.getElementById('poem-list');
+            list.innerHTML = '';
+
+            if (data.poems.length === 0) {
+                list.innerHTML = '<div class="empty-state"><div class="icon">📜</div><h3>未找到相关诗词</h3><p>请尝试其他搜索条件</p></div>';
+                document.getElementById('pagination').innerHTML = '';
+                return;
+            }
+
+            for (const poem of data.poems) {
+                list.appendChild(createPoemCard(poem));
+            }
+
+            renderPagination(data.totalPages, data.page);
+        }
+
+        function renderPagination(totalPages, page) {
+            const pag = document.getElementById('pagination');
+            pag.innerHTML = '';
+            if (totalPages <= 1) return;
+
+            const addBtn = (text, p, disabled, active) => {
+                const btn = document.createElement('button');
+                btn.textContent = text;
+                btn.disabled = disabled;
+                if (active) btn.classList.add('active');
+                btn.onclick = () => { if (!disabled) { currentPage = p; loadPoems(); window.scrollTo(0, 0); } };
+                pag.appendChild(btn);
+            };
+
+            addBtn('首页', 1, page === 1, false);
+            addBtn('上一页', page - 1, page === 1, false);
+
+            let start = Math.max(1, page - 3);
+            let end = Math.min(totalPages, page + 3);
+            if (start > 1) addBtn('...', 0, true, false);
+            for (let i = start; i <= end; i++) {
+                addBtn(i, i, false, i === page);
+            }
+            if (end < totalPages) addBtn('...', 0, true, false);
+
+            addBtn('下一页', page + 1, page === totalPages, false);
+            addBtn('末页', totalPages, page === totalPages, false);
+
+            const info = document.createElement('span');
+            info.style.cssText = 'padding:8px 16px;color:var(--text-light);font-size:14px;align-self:center;';
+            info.textContent = `第${page}/${totalPages}页`;
+            pag.appendChild(info);
+        }
+
+        function reloadPoems() {
+            currentPage = 1;
+            loadPoems();
+        }
+
+        init();
+    </script>
+</body>
+</html>

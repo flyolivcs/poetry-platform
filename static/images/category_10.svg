@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="180" viewBox="0 0 400 180">
+  <defs>
+    <linearGradient id="g10" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#37474F;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#B0BEC5;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <rect width="400" height="180" fill="url(#g10)"/>
+  <circle cx="60" cy="40" r="30" fill="rgba(255,255,255,0.15)"/>
+  <circle cx="340" cy="140" r="40" fill="rgba(255,255,255,0.1)"/>
+  <path d="M0,140 Q100,100 200,130 T400,120 L400,180 L0,180 Z" fill="rgba(255,255,255,0.12)"/>
+  <text x="200" y="80" text-anchor="middle" font-size="48" fill="rgba(255,255,255,0.3)" font-family="serif">🖌</text>
+  <text x="200" y="115" text-anchor="middle" font-size="28" fill="white" font-family="serif" font-weight="bold" letter-spacing="6">题画写意</text>
+  <text x="200" y="145" text-anchor="middle" font-size="14" fill="rgba(255,255,255,0.7)" font-family="serif">中华古诗词学习平台</text>
+</svg>

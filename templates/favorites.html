@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的收藏 - 古诗词学习平台</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo"><span class="icon">📜</span> 古诗词学习平台</div>
+        <div class="nav-links">
+            <a href="/">首页</a>
+            <a href="/category">全部诗词</a>
+            <a href="/favorites" class="active">我的收藏</a>
+            <a href="/videos">我的视频</a>
+        </div>
+        <div class="user-area" id="user-area"></div>
+    </nav>
+
+    <div class="container">
+        <h2 class="section-title">我的收藏</h2>
+        <div id="fav-container">
+            <div class="loading">正在加载...</div>
+        </div>
+    </div>
+
+    <div class="footer"><p>古诗词学习平台 | 真实历史诗词数据</p></div>
+
+    <script src="/static/js/app.js"></script>
+    <script>
+        async function init() {
+            await renderNavbar();
+            if (!API.token) {
+                document.getElementById('fav-container').innerHTML = `
+                    <div class="empty-state">
+                        <div class="icon">🔒</div>
+                        <h3>请先登录</h3>
+                        <p>登录后可查看您的收藏诗词</p>
+                        <button class="btn-primary" style="margin-top:20px;padding:10px 30px;border:none;border-radius:8px;cursor:pointer;font-size:16px;" onclick="location.href='/login'">去登录</button>
+                    </div>`;
+                return;
+            }
+            const data = await API.getFavorites();
+            if (data.error) {
+                showToast(data.error);
+                return;
+            }
+            const container = document.getElementById('fav-container');
+            if (data.favorites.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="icon">📜</div>
+                        <h3>暂无收藏</h3>
+                        <p>浏览诗词时点击"收藏"即可添加到此处</p>
+                        <button class="btn-primary" style="margin-top:20px;padding:10px 30px;border:none;border-radius:8px;cursor:pointer;font-size:16px;" onclick="location.href='/category'">去浏览诗词</button>
+                    </div>`;
+                return;
+            }
+            container.innerHTML = `<p style="text-align:center;color:var(--text-light);margin-bottom:20px;">共收藏 ${data.favorites.length} 首诗词</p>`;
+            const list = document.createElement('div');
+            list.className = 'poem-list';
+            for (const poem of data.favorites) {
+                list.appendChild(createPoemCard(poem));
+            }
+            container.appendChild(list);
+        }
+        init();
+    </script>
+</body>
+</html>
