@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <svg xmlns="http://www.w3.org/2000/svg" width="400" height="180" viewBox="0 0 400 180">
   <defs>
     <linearGradient id="g9" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -12,4 +13,29 @@
   <text x="200" y="80" text-anchor="middle" font-size="48" fill="rgba(255,255,255,0.3)" font-family="serif">☯</text>
   <text x="200" y="115" text-anchor="middle" font-size="28" fill="white" font-family="serif" font-weight="bold" letter-spacing="6">禅理悟道</text>
   <text x="200" y="145" text-anchor="middle" font-size="14" fill="rgba(255,255,255,0.7)" font-family="serif">中华古诗词学习平台</text>
+=======
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="500" viewBox="0 0 800 500">
+<defs>
+    <linearGradient id="paper" x1="0%" y1="0%" x2="0%" y2="100%">
+        <stop offset="0%" style="stop-color:#F7F3ED"/>
+        <stop offset="100%" style="stop-color:#EDE6DB"/>
+    </linearGradient>
+    <filter id="ink"><feGaussianBlur stdDeviation="0.5"/></filter>
+    <filter id="wash"><feGaussianBlur stdDeviation="3"/></filter>
+    <filter id="wash2"><feGaussianBlur stdDeviation="6"/></filter>
+</defs>
+<rect width="100%" height="100%" fill="url(#paper)"/>
+
+    <circle cx="400" cy="230" r="130" fill="none" stroke="#2C2C2C" stroke-width="2.5" opacity="0.15" filter="url(#wash)"/>
+    <circle cx="400" cy="230" r="95" fill="none" stroke="#2C2C2C" stroke-width="2" opacity="0.2" filter="url(#wash)"/>
+    <circle cx="400" cy="230" r="60" fill="none" stroke="#2C2C2C" stroke-width="1.5" opacity="0.25"/>
+    <circle cx="400" cy="230" r="30" fill="#2C2C2C" opacity="0.05"/>
+    <path d="M400,100 Q420,160 400,230 Q380,300 400,360" stroke="#5A5A5A" stroke-width="1.5" fill="none" opacity="0.15"/>
+    <path d="M270,230 Q340,210 400,230 Q460,250 530,230" stroke="#5A5A5A" stroke-width="1.5" fill="none" opacity="0.15"/>
+    <path d="M300,170 Q350,200 400,170 Q450,140 500,170" stroke="#9A9A9A" stroke-width="1" fill="none" opacity="0.1"/>
+    <path d="M300,290 Q350,260 400,290 Q450,320 500,290" stroke="#9A9A9A" stroke-width="1" fill="none" opacity="0.1"/>
+    <circle cx="400" cy="230" r="4" fill="#2C2C2C" opacity="0.3"/>
+    <path d="M0,420 Q200,410 400,425 Q600,415 800,430 L800,500 L0,500 Z" fill="#9A9A9A" opacity="0.08" filter="url(#wash2)"/>
+
+>>>>>>> origin/main
 </svg>

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <svg xmlns="http://www.w3.org/2000/svg" width="400" height="180" viewBox="0 0 400 180">
   <defs>
     <linearGradient id="g5" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -12,4 +13,32 @@
   <text x="200" y="80" text-anchor="middle" font-size="48" fill="rgba(255,255,255,0.3)" font-family="serif">❀</text>
   <text x="200" y="115" text-anchor="middle" font-size="28" fill="white" font-family="serif" font-weight="bold" letter-spacing="6">爱情闺怨</text>
   <text x="200" y="145" text-anchor="middle" font-size="14" fill="rgba(255,255,255,0.7)" font-family="serif">中华古诗词学习平台</text>
+=======
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="500" viewBox="0 0 800 500">
+<defs>
+    <linearGradient id="paper" x1="0%" y1="0%" x2="0%" y2="100%">
+        <stop offset="0%" style="stop-color:#F7F3ED"/>
+        <stop offset="100%" style="stop-color:#EDE6DB"/>
+    </linearGradient>
+    <filter id="ink"><feGaussianBlur stdDeviation="0.5"/></filter>
+    <filter id="wash"><feGaussianBlur stdDeviation="3"/></filter>
+    <filter id="wash2"><feGaussianBlur stdDeviation="6"/></filter>
+</defs>
+<rect width="100%" height="100%" fill="url(#paper)"/>
+
+    <path d="M0,380 Q200,370 400,390 Q600,375 800,395 L800,500 L0,500 Z" fill="#9A9A9A" opacity="0.1" filter="url(#wash2)"/>
+    <rect x="200" y="150" width="400" height="250" fill="none" stroke="#5A5A5A" stroke-width="2" opacity="0.2"/>
+    <path d="M200,150 Q210,140 220,150 Q230,140 240,150 Q250,140 260,150 Q270,140 280,150 Q290,140 300,150" stroke="#2C2C2C" stroke-width="2" fill="none" opacity="0.25"/>
+    <path d="M500,150 Q510,140 520,150 Q530,140 540,150 Q550,140 560,150 Q570,140 580,150 Q590,140 600,150" stroke="#2C2C2C" stroke-width="2" fill="none" opacity="0.25"/>
+    <path d="M200,400 Q210,410 220,400 Q230,410 240,400 Q250,410 260,400 Q270,410 280,400 Q290,410 300,400" stroke="#2C2C2C" stroke-width="2" fill="none" opacity="0.25"/>
+    <path d="M500,400 Q510,410 520,400 Q530,410 540,400 Q550,410 560,400 Q570,410 580,400 Q590,410 600,400" stroke="#2C2C2C" stroke-width="2" fill="none" opacity="0.25"/>
+    <path d="M300,200 Q280,220 290,260 Q310,280 320,250 Q330,220 300,200" fill="#2C2C2C" opacity="0.08" filter="url(#wash)"/>
+    <path d="M500,220 Q480,240 490,280 Q510,300 520,270 Q530,240 500,220" fill="#2C2C2C" opacity="0.08" filter="url(#wash)"/>
+    <circle cx="350" cy="320" r="4" fill="#2C2C2C" opacity="0.15"/>
+    <circle cx="450" cy="340" r="3" fill="#2C2C2C" opacity="0.12"/>
+    <circle cx="400" cy="360" r="5" fill="#2C2C2C" opacity="0.1"/>
+    <circle cx="380" cy="380" r="3" fill="#2C2C2C" opacity="0.08"/>
+    <circle cx="480" cy="370" r="4" fill="#2C2C2C" opacity="0.1"/>
+
+>>>>>>> origin/main
 </svg>

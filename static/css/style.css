@@ -129,7 +129,11 @@ a:hover { color: var(--red); }
     content: '';
     position: absolute;
     top: 0; left: 0; right: 0; bottom: 0;
+<<<<<<< HEAD
     background: linear-gradient(135deg, var(--bg-dark) 0%, var(--primary) 100%);
+=======
+    background: url('https://images.unsplash.com/photo-1528360983278-4436c3c0c0c0?w=1200&q=80') center/cover;
+>>>>>>> origin/main
     opacity: 0.15;
 }
 
@@ -298,6 +302,7 @@ a:hover { color: var(--red); }
     color: var(--primary);
 }
 
+<<<<<<< HEAD
 .poem-card .poem-meta .tag-grade {
     background: linear-gradient(135deg, #e74c3c, #c0392b);
     color: #fff;
@@ -309,6 +314,8 @@ a:hover { color: var(--red); }
     border-left: 3px solid #e74c3c;
 }
 
+=======
+>>>>>>> origin/main
 .poem-card .poem-content {
     font-size: 16px;
     color: var(--text);

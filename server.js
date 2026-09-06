@@ -32,6 +32,7 @@ function getCategoryImage(id) {
     return `/static/images/category_${id}.jpg`;
 }
 
+<<<<<<< HEAD
 const GRADE_ORDER = {
     '小学1年级': 1, '小学2年级': 2, '小学3年级': 3, '小学4年级': 4, '小学5年级': 5, '小学6年级': 6,
     '初中1年级': 7, '初中2年级': 8, '初中3年级': 9,
@@ -54,6 +55,8 @@ function sortPoems(arr) {
     });
 }
 
+=======
+>>>>>>> origin/main
 for (const cat of categories) {
     cat.image = getCategoryImage(cat.id);
 }
@@ -138,8 +141,11 @@ const server = http.createServer(async (req, res) => {
                 );
             }
 
+<<<<<<< HEAD
             filtered = sortPoems([...filtered]);
 
+=======
+>>>>>>> origin/main
             const total = filtered.length;
             const totalPages = Math.ceil(total / pageSize);
             const start = (page - 1) * pageSize;
@@ -311,6 +317,22 @@ const server = http.createServer(async (req, res) => {
     return serveStatic(path.join(TEMPLATE_DIR, '404.html'), res);
 });
 
+<<<<<<< HEAD
+=======
+function detectFreePort() {
+    const net = require('net');
+    return new Promise((resolve) => {
+        const server = net.createServer();
+        server.unref();
+        server.on('error', () => resolve(null));
+        server.listen(0, () => {
+            const port = server.address().port;
+            server.close(() => resolve(port));
+        });
+    });
+}
+
+>>>>>>> origin/main
 (async () => {
     let port = parseInt(process.env.PORT) || 3000;
     const net = require('net');

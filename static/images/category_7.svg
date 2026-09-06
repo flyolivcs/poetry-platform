@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <svg xmlns="http://www.w3.org/2000/svg" width="400" height="180" viewBox="0 0 400 180">
   <defs>
     <linearGradient id="g7" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -12,4 +13,32 @@
   <text x="200" y="80" text-anchor="middle" font-size="48" fill="rgba(255,255,255,0.3)" font-family="serif">✦</text>
   <text x="200" y="115" text-anchor="middle" font-size="28" fill="white" font-family="serif" font-weight="bold" letter-spacing="6">咏物言志</text>
   <text x="200" y="145" text-anchor="middle" font-size="14" fill="rgba(255,255,255,0.7)" font-family="serif">中华古诗词学习平台</text>
+=======
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="500" viewBox="0 0 800 500">
+<defs>
+    <linearGradient id="paper" x1="0%" y1="0%" x2="0%" y2="100%">
+        <stop offset="0%" style="stop-color:#F7F3ED"/>
+        <stop offset="100%" style="stop-color:#EDE6DB"/>
+    </linearGradient>
+    <filter id="ink"><feGaussianBlur stdDeviation="0.5"/></filter>
+    <filter id="wash"><feGaussianBlur stdDeviation="3"/></filter>
+    <filter id="wash2"><feGaussianBlur stdDeviation="6"/></filter>
+</defs>
+<rect width="100%" height="100%" fill="url(#paper)"/>
+
+    <path d="M300,420 Q300,350 310,280 Q320,220 330,170 Q340,130 350,100" stroke="#2C2C2C" stroke-width="3" fill="none" filter="url(#ink)"/>
+    <path d="M310,280 Q280,260 260,230" stroke="#2C2C2C" stroke-width="2" fill="none" opacity="0.7"/>
+    <path d="M260,230 Q250,220 240,200" stroke="#2C2C2C" stroke-width="1.5" fill="none" opacity="0.5"/>
+    <path d="M330,170 Q360,150 380,120" stroke="#2C2C2C" stroke-width="2" fill="none" opacity="0.7"/>
+    <path d="M380,120 Q390,110 400,95" stroke="#2C2C2C" stroke-width="1.5" fill="none" opacity="0.5"/>
+    <path d="M340,130 Q310,110 290,85" stroke="#2C2C2C" stroke-width="1.5" fill="none" opacity="0.6"/>
+    <ellipse cx="255" cy="225" rx="12" ry="4" fill="#2C2C2C" opacity="0.2" transform="rotate(-30 255 225)"/>
+    <ellipse cx="375" cy="115" rx="12" ry="4" fill="#2C2C2C" opacity="0.2" transform="rotate(30 375 115)"/>
+    <ellipse cx="295" cy="80" rx="10" ry="3" fill="#2C2C2C" opacity="0.15" transform="rotate(-40 295 80)"/>
+    <circle cx="550" cy="180" r="25" fill="none" stroke="#2C2C2C" stroke-width="2" opacity="0.3" filter="url(#wash)"/>
+    <circle cx="550" cy="180" r="15" fill="#2C2C2C" opacity="0.1" filter="url(#wash)"/>
+    <path d="M550,155 Q545,150 550,145 Q555,150 550,155" fill="#2C2C2C" opacity="0.2"/>
+    <path d="M0,430 Q200,420 400,435 Q600,425 800,440 L800,500 L0,500 Z" fill="#9A9A9A" opacity="0.1" filter="url(#wash2)"/>
+
+>>>>>>> origin/main
 </svg>

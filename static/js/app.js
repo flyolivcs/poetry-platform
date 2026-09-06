@@ -82,9 +82,13 @@ function formatContent(content) {
 function createPoemCard(poem) {
     const card = document.createElement('div');
     card.className = 'poem-card';
+<<<<<<< HEAD
     if (poem.grade) card.classList.add('school-poem');
     const contentPreview = poem.content.length > 100 ? poem.content.substring(0, 100) + '...' : poem.content;
     const gradeBadge = poem.grade ? `<span class="tag tag-grade">${poem.grade}</span>` : '';
+=======
+    const contentPreview = poem.content.length > 100 ? poem.content.substring(0, 100) + '...' : poem.content;
+>>>>>>> origin/main
     card.innerHTML = `
         <div class="poem-header">
             <div class="poem-title">${poem.title}${poem.rhythmic ? ' · ' + poem.rhythmic : ''}</div>
@@ -93,7 +97,10 @@ function createPoemCard(poem) {
             <span class="tag">${poem.dynasty}代</span>
             <span class="tag">${poem.type}</span>
             <span class="tag">${poem.author}</span>
+<<<<<<< HEAD
             ${gradeBadge}
+=======
+>>>>>>> origin/main
             <span style="margin-left:8px;">❤ ${poem.likes}</span>
         </div>
         <div class="poem-content">${formatContent(contentPreview)}</div>
